@@ -1,3 +1,4 @@
+from ast import Return
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from receitas.models import Receita
@@ -89,10 +90,26 @@ def edita_receita(request, edita_id):
     receita = get_object_or_404(Receita, pk=edita_id)
     receita_a_editar = {'receita':receita}
     return render(request, 'usuarios/edita_receita.html', receita_a_editar)
+
 def campo_vazio(campo):
     return not campo.strip()
 
 def senhas_nao_sao_iguais(senha, senha2):
     return senha != senha2
+
+def atualiza_receita(request):
+    if request.method == 'POST':
+        receita_id = request.POST['receita_id']
+        r = Receita.objects.get(pk=receita_id)
+        r.nome_receita = request.POST['nome_receita']
+        r.ingredientes = request.POST['ingredientes']
+        r.modo_preparo = request.POST['modo_preparo']
+        r.tempo_preparo = request.POST['tempo_preparo']
+        r.rendimento = request.POST['rendimento']
+        r.categoria = request.POST['categoria']
+        if 'foto_receita' in request.FILES:
+            r.foto_receita = request.FILES['foto_receita']
+        r.save()
+    return redirect('dashboard')
 
 
