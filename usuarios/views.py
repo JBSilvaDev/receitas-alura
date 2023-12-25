@@ -30,7 +30,7 @@ def cadastro(request):
         messages.success(request, 'Cadastro realizado com sucesso')
         return redirect('login')
     else:
-        return render(request,'usuarios/cadastro.html')
+        return render(request,'cadastro.html')
 
 def login(request):
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def login(request):
                 auth.login(request, user)
                 print('Login realizado com sucesso')
                 return redirect('dashboard')
-    return render(request, 'usuarios/login.html')
+    return render(request, 'login.html')
 
 def logout(request):
     auth.logout(request)
@@ -61,7 +61,7 @@ def dashboard(request):
         dados = { 
             'receitas' : receitas
         }
-        return render(request, 'usuarios/dashboard.html', dados)
+        return render(request, 'dashboard.html', dados)
     else:
         return redirect('index')
 
@@ -79,7 +79,7 @@ def cria_receita(request):
         receita.save()
         return redirect('dashboard')
     else:
-        return render(request, 'usuarios/cria_receita.html')
+        return render(request, 'cria_receita.html')
 
 def deleta_receita(request, receita_id):
     receita = get_object_or_404(Receita, pk=receita_id )
@@ -89,7 +89,7 @@ def deleta_receita(request, receita_id):
 def edita_receita(request, edita_id):
     receita = get_object_or_404(Receita, pk=edita_id)
     receita_a_editar = {'receita':receita}
-    return render(request, 'usuarios/edita_receita.html', receita_a_editar)
+    return render(request, 'edita_receita.html', receita_a_editar)
 
 def campo_vazio(campo):
     return not campo.strip()
@@ -107,6 +107,7 @@ def atualiza_receita(request):
         r.tempo_preparo = request.POST['tempo_preparo']
         r.rendimento = request.POST['rendimento']
         r.categoria = request.POST['categoria']
+        r.publicada = request.POST.get('publicada', True) == 'on'
         if 'foto_receita' in request.FILES:
             r.foto_receita = request.FILES['foto_receita']
         r.save()
