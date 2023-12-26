@@ -1,5 +1,4 @@
-from ast import Return
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from receitas.models import Receita
 from django.contrib import auth, messages
