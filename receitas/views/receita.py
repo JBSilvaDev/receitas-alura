@@ -20,20 +20,6 @@ def receita(request, receita_id):
 
     return render(request,'receita.html', receita_a_exibir)
 
-def buscar(request):
-    lista_receitas = Receita.objects.order_by('-date_receita').filter(publicada=True)
-
-    if 'buscar' in request.GET:
-        nome_a_buscar = request.GET['buscar']
-        if buscar:
-            lista_receitas = lista_receitas.filter(nome_receita__icontains=nome_a_buscar)
-
-    dados = {
-        'receitas' : lista_receitas
-    }
-
-    return render(request, 'buscar.html', dados)
-
 def cria_receita(request):
     if request.method == 'POST':
         nome_receita = request.POST['nome_receita']
@@ -75,3 +61,4 @@ def atualiza_receita(request):
             r.foto_receita = request.FILES['foto_receita']
         r.save()
     return redirect('dashboard')
+
